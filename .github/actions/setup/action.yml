@@ -1,10 +1,12 @@
 name: Setup Python
 
+description: 'Setup environment'
 runs:
   using: 'composite'
   steps:
+    # https://python-poetry.org/docs/#ci-recommendations
     - name: Install poetry
-      run: pipx install poetry
+      run: pipx install poetry==1.8.3
       shell: bash
 
     - name: Set up Python

@@ -12,10 +12,11 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Run linter
+      - name: Run linter and type checker
         run: |
           poetry run ruff format .
           poetry run ruff check .
+          poetry run mypy .
 
   tests:
     runs-on: ubuntu-latest

@@ -6,7 +6,8 @@ from app.users.schemas import UserDetail
 
 
 class User(Base):
-    name: Mapped[str] = mapped_column(String(128))
+    email: Mapped[str] = mapped_column(String(128))
+    username: Mapped[str] = mapped_column(String(128))
 
 
 class UserSQLRepository(AbstractSQLAlchemyRepository[User, UserDetail]):

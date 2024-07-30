@@ -2,12 +2,7 @@ from typing import Any, Protocol, Type, TypeVar
 
 from pydantic import BaseModel
 
-
-class GenericBaseModel(BaseModel):
-    id: int
-
-
-EntityType = TypeVar("EntityType", bound=GenericBaseModel)
+EntityType = TypeVar("EntityType", bound=BaseModel)
 
 
 class AbstractRepository(Protocol[EntityType]):

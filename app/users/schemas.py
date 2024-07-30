@@ -1,9 +1,8 @@
-from pydantic import ConfigDict
-
-from app.repository.interface import GenericBaseModel
+from pydantic import BaseModel, ConfigDict
 
 
-class UserDetail(GenericBaseModel):
+class UserDetail(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    id: int
     name: str

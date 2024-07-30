@@ -15,6 +15,7 @@ class UserInMemoryRepository(AbstractInMemoryRepository[UserDetail]):
 
     def __init__(self, input_data: list[dict[str, Any]]) -> None:
         self.entity = UserDetail
+        self.key = "id"
         self.fake_data = [self.entity.model_validate(data) for data in input_data]
 
 

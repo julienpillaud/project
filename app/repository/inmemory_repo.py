@@ -6,10 +6,16 @@ from app.repository.interface import AbstractRepository, EntityType
 class AbstractInMemoryRepository(AbstractRepository[EntityType]):
     fake_data: list[EntityType]
     id_counter: int = 1
+    key: str
 
     def get_by_id(self, entity_id: int) -> EntityType | None:
         return next(
-            (entity for entity in self.fake_data if entity.id == entity_id), None
+            (
+                entity
+                for entity in self.fake_data
+                if getattr(entity, self.key) == entity_id
+            ),
+            None,
         )
 
     def get_all(self) -> list[EntityType]:

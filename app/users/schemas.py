@@ -1,14 +1,18 @@
+import uuid
+
 from pydantic import BaseModel, ConfigDict
 
 
 class UserBase(BaseModel):
-    email: str | None = None
-    username: str | None = None
+    upn: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
 
 
 class UserCreate(UserBase):
-    email: str
-    username: str
+    upn: str
+    first_name: str
+    last_name: str
 
 
 class UserUpdate(UserBase):
@@ -18,4 +22,4 @@ class UserUpdate(UserBase):
 class UserDetail(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
+    id: uuid.UUID

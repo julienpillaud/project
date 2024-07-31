@@ -1,3 +1,4 @@
+import uuid
 from typing import Iterator
 
 import pytest
@@ -13,8 +14,12 @@ def session() -> Iterator[Session]:
     engine = create_engine("sqlite://")
     Base.metadata.create_all(engine)
     with Session(engine) as sql_session:
-        user_1 = User(id=1, email="user1@mail.com", username="user 1")
-        user_2 = User(id=2, email="user2@mail.com", username="user 2")
+        user_1 = User(
+            id=uuid.uuid4(), upn="user1@mail.com", first_name="user 1", last_name=""
+        )
+        user_2 = User(
+            id=uuid.uuid4(), upn="user2@mail.com", first_name="user 2", last_name=""
+        )
         sql_session.add(user_1)
         sql_session.add(user_2)
         sql_session.commit()

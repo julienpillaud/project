@@ -1,3 +1,5 @@
+import uuid
+
 from app.repository.interface import AbstractRepository
 from app.users.schemas import UserCreate, UserDetail, UserUpdate
 
@@ -9,7 +11,7 @@ class UserService:
 
     @staticmethod
     def get_user(
-        repository: AbstractRepository[UserDetail], user_id: int
+        repository: AbstractRepository[UserDetail], user_id: uuid.UUID
     ) -> UserDetail | None:
         return repository.get(entity_id=user_id)
 
@@ -22,7 +24,7 @@ class UserService:
     @staticmethod
     def update_user(
         repository: AbstractRepository[UserDetail],
-        user_id: int,
+        user_id: uuid.UUID,
         user_update: UserUpdate,
     ) -> UserDetail | None:
         return repository.update(
@@ -30,5 +32,7 @@ class UserService:
         )
 
     @staticmethod
-    def delete_user(repository: AbstractRepository[UserDetail], user_id: int) -> None:
+    def delete_user(
+        repository: AbstractRepository[UserDetail], user_id: uuid.UUID
+    ) -> None:
         return repository.delete(entity_id=user_id)

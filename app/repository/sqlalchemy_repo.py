@@ -1,6 +1,7 @@
+import uuid
 from typing import Any, Generic, Type, TypeVar
 
-from sqlalchemy import select
+from sqlalchemy import UUID, select
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -22,7 +23,9 @@ class Base(DeclarativeBase):
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
 
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -39,7 +42,7 @@ class AbstractSQLAlchemyRepository(
         entities = self.session.scalars(stmt)
         return [self.entity.model_validate(entity) for entity in entities]
 
-    def get(self, entity_id: int) -> EntityType | None:
+    def get(self, entity_id: uuid.UUID) -> EntityType | None:
         # Need to have Base(DeclarativeBase) to call self.model.id
         stmt = select(self.model).where(self.model.id == entity_id)
         model_obj = self.session.scalars(stmt).first()
@@ -52,7 +55,7 @@ class AbstractSQLAlchemyRepository(
         return self.entity.model_validate(model_obj)
 
     def update(
-        self, entity_id: int, entity_update: dict[str, Any]
+        self, entity_id: uuid.UUID, entity_update: dict[str, Any]
     ) -> EntityType | None:
         stmt = select(self.model).where(self.model.id == entity_id)
         model_obj = self.session.scalars(stmt).first()
@@ -65,7 +68,7 @@ class AbstractSQLAlchemyRepository(
         self.session.commit()
         return self.entity.model_validate(model_obj)
 
-    def delete(self, entity_id: int) -> None:
+    def delete(self, entity_id: uuid.UUID) -> None:
         stmt = select(self.model).where(self.model.id == entity_id)
         if model_obj := self.session.scalars(stmt).first():
             self.session.delete(model_obj)

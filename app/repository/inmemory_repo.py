@@ -1,3 +1,4 @@
+import uuid
 from typing import Any
 
 from app.repository.interface import AbstractRepository, EntityType
@@ -5,10 +6,9 @@ from app.repository.interface import AbstractRepository, EntityType
 
 class AbstractInMemoryRepository(AbstractRepository[EntityType]):
     fake_data: list[EntityType]
-    id_counter: int = 1
     key: str
 
-    def get_by_id(self, entity_id: int) -> EntityType | None:
+    def get_by_id(self, entity_id: uuid.UUID) -> EntityType | None:
         return next(
             (
                 entity
@@ -21,18 +21,17 @@ class AbstractInMemoryRepository(AbstractRepository[EntityType]):
     def get_all(self) -> list[EntityType]:
         return [self.entity.model_validate(entity) for entity in self.fake_data]
 
-    def get(self, entity_id: int) -> EntityType | None:
+    def get(self, entity_id: uuid.UUID) -> EntityType | None:
         return self.get_by_id(entity_id=entity_id)
 
     def create(self, entity_create: dict[str, Any]) -> EntityType:
-        entity_create["id"] = self.id_counter
+        entity_create["id"] = uuid.uuid4()
         data = self.entity.model_validate(entity_create)
         self.fake_data.append(data)
-        self.id_counter += 1
         return data
 
     def update(
-        self, entity_id: int, entity_update: dict[str, Any]
+        self, entity_id: uuid.UUID, entity_update: dict[str, Any]
     ) -> EntityType | None:
         entity = self.get_by_id(entity_id=entity_id)
         if not entity:
@@ -44,7 +43,7 @@ class AbstractInMemoryRepository(AbstractRepository[EntityType]):
 
         return entity
 
-    def delete(self, entity_id: int) -> None:
+    def delete(self, entity_id: uuid.UUID) -> None:
         if entity := self.get_by_id(entity_id=entity_id):
             self.fake_data.remove(entity)
         else:

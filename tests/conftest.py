@@ -1,3 +1,4 @@
+import uuid
 from typing import Any
 
 import pytest
@@ -18,7 +19,17 @@ class UserInMemoryRepository(AbstractInMemoryRepository[UserDetail]):
 @pytest.fixture()
 def user_inmemory_repo() -> UserInMemoryRepository:
     input_data: list[dict[str, Any]] = [
-        {"id": 1, "email": "user1@mail.com", "username": "user 1"},
-        {"id": 2, "email": "user2@mail.com", "username": "user 2"},
+        {
+            "id": uuid.uuid4(),
+            "upn": "user1@mail.com",
+            "first_name": "user 1",
+            "last_name": "",
+        },
+        {
+            "id": uuid.uuid4(),
+            "upn": "user2@mail.com",
+            "first_name": "user 2",
+            "last_name": "",
+        },
     ]
     return UserInMemoryRepository(input_data=input_data)

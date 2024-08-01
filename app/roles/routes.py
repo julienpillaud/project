@@ -1,6 +1,7 @@
+import uuid
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_session
@@ -26,3 +27,11 @@ RepositoryDependency = Annotated[
 @router.get("/", response_model=list[RoleDetail])
 def get_roles(repository: RepositoryDependency) -> Any:
     return RoleService.get_roles(repository=repository)
+
+
+@router.get("/{role_id}", response_model=RoleDetail)
+def get_role(repository: RepositoryDependency, role_id: uuid.UUID) -> Any:
+    role = RoleService.get_role(repository=repository, role_id=role_id)
+    if not role:
+        raise HTTPException(status_code=404, detail="Role not found")
+    return role

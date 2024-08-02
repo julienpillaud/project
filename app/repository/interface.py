@@ -1,22 +1,19 @@
 import uuid
-from typing import Any, Protocol, Type, TypeVar
+from typing import Any, Protocol
 
-from pydantic import BaseModel
+from app.roles.schemas import RoleDetail
+from app.users.schemas import UserDetail
 
-EntityType = TypeVar("EntityType", bound=BaseModel)
+
+class AbstractUserRepository(Protocol):
+    def get_all(self) -> list[UserDetail]: ...
+
+    def get(self, entity_id: uuid.UUID) -> UserDetail | None: ...
+
+    def create(self, entity_create: dict[str, Any]) -> UserDetail: ...
 
 
-class AbstractRepository(Protocol[EntityType]):
-    entity: Type[EntityType]
+class AbstractRoleRepository(Protocol):
+    def get_all(self) -> list[RoleDetail]: ...
 
-    def get_all(self) -> list[EntityType]: ...
-
-    def get(self, entity_id: uuid.UUID) -> EntityType | None: ...
-
-    def create(self, entity_create: dict[str, Any]) -> EntityType: ...
-
-    def update(
-        self, entity_id: uuid.UUID, entity_update: dict[str, Any]
-    ) -> EntityType | None: ...
-
-    def delete(self, entity_id: uuid.UUID) -> None: ...
+    def get_by_code(self, code: str) -> RoleDetail | None: ...

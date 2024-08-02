@@ -1,38 +1,18 @@
 import uuid
 
-from app.repository.interface import AbstractRepository
-from app.users.schemas import UserCreate, UserDetail, UserUpdate
+from app.repository.interface import AbstractUserRepository
+from app.users.schemas import UserCreate, UserDetail
 
 
 class UserService:
-    @staticmethod
-    def get_users(repository: AbstractRepository[UserDetail]) -> list[UserDetail]:
-        return repository.get_all()
+    def __init__(self, repository: AbstractUserRepository):
+        self.repository = repository
 
-    @staticmethod
-    def get_user(
-        repository: AbstractRepository[UserDetail], user_id: uuid.UUID
-    ) -> UserDetail | None:
-        return repository.get(entity_id=user_id)
+    def get_users(self) -> list[UserDetail]:
+        return self.repository.get_all()
 
-    @staticmethod
-    def create_user(
-        repository: AbstractRepository[UserDetail], user_create: UserCreate
-    ) -> UserDetail:
-        return repository.create(entity_create=user_create.model_dump())
+    def get_user(self, user_id: uuid.UUID) -> UserDetail | None:
+        return self.repository.get(entity_id=user_id)
 
-    @staticmethod
-    def update_user(
-        repository: AbstractRepository[UserDetail],
-        user_id: uuid.UUID,
-        user_update: UserUpdate,
-    ) -> UserDetail | None:
-        return repository.update(
-            entity_id=user_id, entity_update=user_update.model_dump()
-        )
-
-    @staticmethod
-    def delete_user(
-        repository: AbstractRepository[UserDetail], user_id: uuid.UUID
-    ) -> None:
-        return repository.delete(entity_id=user_id)
+    def create_user(self, user_create: UserCreate) -> UserDetail:
+        return self.repository.create(entity_create=user_create.model_dump())

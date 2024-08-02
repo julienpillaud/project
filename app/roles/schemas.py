@@ -21,3 +21,5 @@ class RoleDetail(RoleBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
+    code: str
+    description: str

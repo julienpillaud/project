@@ -9,4 +9,4 @@ router = APIRouter(tags=["roles"], prefix="/roles")
 
 @router.get("/", response_model=list[RoleDetail])
 def get_roles() -> Any:
-    return {}
+    return []

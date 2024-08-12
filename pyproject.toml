@@ -2,17 +2,18 @@
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
-fastapi = {extras = ["standard"], version = "^0.112.0"}
-pydantic-settings = "^2.4.0"
-sqlalchemy = "^2.0.32"
-psycopg = {extras = ["binary"], version = "^3.2.1"}
-alembic = "^1.13.2"
+python = "3.12.5"
+fastapi = "0.112.0"
+uvicorn = "0.30.5"
+pydantic-settings = "2.4.0"
+sqlalchemy = "2.0.32"
+psycopg = {extras = ["binary"], version = "3.2.1"}
+alembic = "1.13.2"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.5.6"
-mypy = "^1.11.1"
-pytest = "^8.3.2"
+ruff = "0.5.7"
+mypy = "1.11.1"
+pytest = "8.3.2"
 
 [tool.ruff]
 output-format = "concise"

@@ -1,5 +1,8 @@
 name: Release
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -18,3 +21,27 @@ jobs:
       - name: Update pyproject.toml
         run: |
           sed -i "s/^version = \".*\"/version = \"${{ inputs.tag }}\"/" pyproject.toml
+
+      - name: Release branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml
+          git commit -m "Release version ${{ inputs.tag }}"
+          git checkout -b "release-${{ inputs.tag }}"
+          git push origin "release-${{ inputs.tag }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update main
+        run: |
+          git checkout main
+          git merge "release-${{ inputs.tag }}"
+          git push origin main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag }}

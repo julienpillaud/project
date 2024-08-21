@@ -38,6 +38,7 @@ jobs:
           git checkout main
           git merge "release-${{ inputs.tag }}"
           git push origin main
+          git push -d origin "release-${{ inputs.tag }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

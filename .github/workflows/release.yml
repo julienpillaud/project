@@ -1,0 +1,20 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release Tag
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update pyproject.toml
+        run: |
+          sed -i "s/^version = \".*\"/version = \"${{ inputs.tag }}\"/" pyproject.toml

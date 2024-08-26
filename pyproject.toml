@@ -4,16 +4,16 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "0.112.1"
-uvicorn = "0.30.5"
+fastapi = "0.112.2"
+uvicorn = "0.30.6"
 pydantic-settings = "2.4.0"
 sqlalchemy = "2.0.32"
 psycopg = {extras = ["binary"], version = "3.2.1"}
 alembic = "1.13.2"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "0.6.1"
-mypy = "1.11.1"
+ruff = "0.6.2"
+mypy = "1.11.2"
 pytest = "8.3.2"
 
 [tool.ruff]

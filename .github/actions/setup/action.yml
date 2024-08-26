@@ -4,17 +4,15 @@ description: 'Setup environment'
 runs:
   using: 'composite'
   steps:
-    # https://python-poetry.org/docs/#ci-recommendations
-    - name: Install poetry
-      run: pipx install poetry==1.8.3
+    - name: Set up uv
+      run: curl -LsSf https://astral.sh/uv/0.3.3/install.sh | sh
       shell: bash
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
-        cache: 'poetry'
+        python-version-file: "pyproject.toml"
 
     - name: Install dependencies
-      run: poetry install
+      run: uv sync --no-install-project
       shell: bash

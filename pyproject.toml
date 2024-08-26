@@ -1,20 +1,22 @@
-[tool.poetry]
+[project]
+name = "project"
 version = "0.0.2"
-package-mode = false
+requires-python = "==3.12.5"
+dependencies = [
+    "fastapi==0.112.2",
+    "uvicorn==0.30.6",
+    "pydantic-settings==2.4.0",
+    "sqlalchemy==2.0.32",
+    "psycopg-binary==3.2.1",
+    "alembic==1.13.2",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-fastapi = "0.112.2"
-uvicorn = "0.30.6"
-pydantic-settings = "2.4.0"
-sqlalchemy = "2.0.32"
-psycopg = {extras = ["binary"], version = "3.2.1"}
-alembic = "1.13.2"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "0.6.2"
-mypy = "1.11.2"
-pytest = "8.3.2"
+[tool.uv]
+dev-dependencies = [
+    "ruff==0.6.2",
+    "mypy==1.11.2",
+    "pytest==8.3.2",
+]
 
 [tool.ruff]
 output-format = "concise"

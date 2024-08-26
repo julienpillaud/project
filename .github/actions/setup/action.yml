@@ -3,6 +3,11 @@ name: Setup Python
 description: 'Setup environment'
 runs:
   using: 'composite'
+
+  env:
+    # Configure a constant location for the uv cache
+    UV_CACHE_DIR: /tmp/.uv-cache
+
   steps:
     - name: Set up uv
       run: curl -LsSf https://astral.sh/uv/0.3.3/install.sh | sh

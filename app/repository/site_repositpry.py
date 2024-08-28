@@ -3,7 +3,7 @@ from typing import Any
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
-from app.repository.interface import AbstractSiteRepository
+from app.repository.interface import AbstractSiteRepository, PrimaryKey
 from app.sites.models import Site
 from app.sites.schemas import SiteDetail
 
@@ -36,7 +36,7 @@ class SQLAlchemySiteRepository(AbstractSiteRepository):
         self.session.commit()
         return SiteDetail.model_validate(entity)
 
-    def delete(self, code: str) -> None:
+    def delete(self, code: PrimaryKey) -> None:
         stmt = delete(Site).where(Site.code == code)
         self.session.execute(stmt)
         self.session.commit()
@@ -63,10 +63,9 @@ class InMemorySiteRepository(AbstractSiteRepository):
             raise ValueError
 
         for key, value in entity_update.items():
-            if hasattr(entity, key):
-                setattr(entity, key, value)
+            setattr(entity, key, value)
 
         return entity
 
-    def delete(self, code: str) -> None:
-        self.data = [item for item in self.data if item.code != code]
+    def delete(self, entity_id: PrimaryKey) -> None:
+        self.data = [item for item in self.data if item.code != entity_id]

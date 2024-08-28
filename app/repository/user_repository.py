@@ -4,7 +4,7 @@ from typing import Any
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
-from app.repository.interface import AbstractUserRepository
+from app.repository.interface import AbstractUserRepository, PrimaryKey
 from app.users.models import User
 from app.users.schemas import UserDetail
 
@@ -34,7 +34,7 @@ class SQLAlchemyUserRepository(AbstractUserRepository):
         self.session.commit()
         return UserDetail.model_validate(model_obj)
 
-    def delete(self, entity_id: uuid.UUID) -> None:
+    def delete(self, entity_id: PrimaryKey) -> None:
         stmt = delete(User).where(User.id == entity_id)
         self.session.execute(stmt)
 
@@ -58,5 +58,5 @@ class InMemoryUserRepository(AbstractUserRepository):
         self.data.append(data)
         return data
 
-    def delete(self, entity_id: uuid.UUID) -> None:
+    def delete(self, entity_id: PrimaryKey) -> None:
         self.data = [item for item in self.data if item.id != entity_id]

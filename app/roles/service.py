@@ -21,4 +21,4 @@ class RoleService:
         )
 
     def delete_role(self, code: str) -> None:
-        self.repository.delete(code=code)
+        self.repository.delete(entity_id=code)

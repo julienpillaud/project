@@ -1,25 +1,17 @@
-import uuid
-
 from pydantic import BaseModel, ConfigDict
 
 
-class RoleBase(BaseModel):
-    code: str | None = None
-    description: str | None = None
-
-
-class RoleCreate(RoleBase):
+class RoleCreate(BaseModel):
     code: str
     description: str
 
 
-class RoleUpdate(RoleBase):
-    pass
+class RoleUpdate(BaseModel):
+    description: str
 
 
-class RoleDetail(RoleBase):
+class RoleDetail(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    id: uuid.UUID
     code: str
     description: str

@@ -3,23 +3,13 @@ import uuid
 from pydantic import BaseModel, ConfigDict
 
 
-class UserBase(BaseModel):
-    upn: str | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-
-
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
     upn: str
     first_name: str
     last_name: str
 
 
-class UserUpdate(UserBase):
-    pass
-
-
-class UserDetail(UserBase):
+class UserDetail(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID

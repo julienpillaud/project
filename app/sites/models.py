@@ -3,6 +3,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.repository.interface import Base
 
 
-class Role(Base):
+class Site(Base):
     code: Mapped[str] = mapped_column(primary_key=True)
-    description: Mapped[str]
+    name: Mapped[str]

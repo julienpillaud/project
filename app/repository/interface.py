@@ -1,5 +1,5 @@
 import uuid
-from typing import Any, Generic, Protocol, TypeVar
+from typing import Any, Protocol, TypeVar
 
 from sqlalchemy.orm import DeclarativeBase, declared_attr
 
@@ -10,7 +10,7 @@ from app.users.schemas import UserDetail
 T = TypeVar("T")
 
 
-class AbstractRepository(Protocol, Generic[T]):
+class AbstractRepository(Protocol[T]):
     def get_all(self) -> list[T]: ...
 
     def create(self, entity_create: dict[str, Any]) -> T: ...

@@ -11,6 +11,9 @@ from app.sites.schemas import SiteDetail
 class SQLAlchemySiteRepository(
     SQLAlchemyRepositoryBase[Site, SiteDetail], AbstractSiteRepository
 ):
+    model = Site
+    schema = SiteDetail
+
     def get_by_code(self, code: str) -> SiteDetail | None:
         stmt = select(Site).where(Site.code == code)
         entity = self.session.scalars(stmt).first()

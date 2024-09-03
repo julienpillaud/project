@@ -12,6 +12,9 @@ from app.users.schemas import UserDetail
 class SQLAlchemyUserRepository(
     SQLAlchemyRepositoryBase[User, UserDetail], AbstractUserRepository
 ):
+    model = User
+    schema = UserDetail
+
     def get(self, entity_id: uuid.UUID) -> UserDetail | None:
         stmt = select(User).where(User.id == entity_id)
         model_obj = self.session.scalars(stmt).first()

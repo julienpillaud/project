@@ -11,6 +11,9 @@ from app.roles.schemas import RoleDetail
 class SQLAlchemyRoleRepository(
     SQLAlchemyRepositoryBase[Role, RoleDetail], AbstractRoleRepository
 ):
+    model = Role
+    schema = RoleDetail
+
     def get_by_code(self, code: str) -> RoleDetail | None:
         stmt = select(Role).where(Role.code == code)
         entity = self.session.scalars(stmt).first()

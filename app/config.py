@@ -1,13 +1,9 @@
 from pydantic import PostgresDsn, computed_field
 from pydantic_core import MultiHostUrl
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", env_ignore_empty=True, extra="ignore"
-    )
-
     POSTGRES_SERVER: str
     POSTGRES_PORT: int
     POSTGRES_USER: str
@@ -25,6 +21,3 @@ class Settings(BaseSettings):
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
         )
-
-
-settings = Settings()  # type: ignore

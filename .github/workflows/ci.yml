@@ -39,7 +39,17 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Run tests
-        run: uv run pytest
+        run: |
+          uv run coverage run --source=app -m pytest
+          uv run coverage report --show-missing
+          uv run coverage html
+
+      - name: Store coverage files
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: htmlcov
+          include-hidden-files: true
 
       - name: Minimize uv cache
         run: uv cache prune --ci

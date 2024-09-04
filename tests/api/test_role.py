@@ -27,6 +27,12 @@ def test_get_role(session: Session, client: TestClient) -> None:
     assert content["description"] == role.description
 
 
+def test_get_role_not_found(session: Session, client: TestClient) -> None:
+    response = client.get("/roles/NOPE")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
 def test_create_role(session: Session, client: TestClient) -> None:
     data = {"code": "DEV", "description": "Developer"}
 
@@ -36,6 +42,15 @@ def test_create_role(session: Session, client: TestClient) -> None:
     content = response.json()
     assert content["code"] == data["code"]
     assert content["description"] == data["description"]
+
+
+def test_create_role_conflict(session: Session, client: TestClient) -> None:
+    role = create_role(session=session)
+    data = {"code": role.code, "description": "Developer"}
+
+    response = client.post("/roles", json=data)
+
+    assert response.status_code == status.HTTP_409_CONFLICT
 
 
 def test_update_role(session: Session, client: TestClient) -> None:
@@ -50,9 +65,23 @@ def test_update_role(session: Session, client: TestClient) -> None:
     assert content["description"] == data["description"]
 
 
+def test_update_role_not_found(session: Session, client: TestClient) -> None:
+    data = {"description": "Updated description"}
+
+    response = client.patch("/roles/NOPE", json=data)
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
 def test_delete_role(session: Session, client: TestClient) -> None:
     role = create_role(session=session)
 
     response = client.delete(f"/roles/{role.code}")
 
     assert response.status_code == status.HTTP_200_OK
+
+
+def test_delete_role_not_found(session: Session, client: TestClient) -> None:
+    response = client.delete("/roles/NOPE")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND

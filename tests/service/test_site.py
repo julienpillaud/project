@@ -26,7 +26,7 @@ def test_get_site_by_code(site_repository: InMemorySiteRepository) -> None:
 
 def test_create_site(site_repository: InMemorySiteRepository) -> None:
     service = SiteService(repository=site_repository)
-    site_create = SiteCreate(code="NEW site", name="new site")
+    site_create = SiteCreate(code="NEW", name="new site")
 
     site = service.create_site(site_create=site_create)
 

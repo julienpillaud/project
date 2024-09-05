@@ -15,18 +15,18 @@ class User(Base):
     last_name: Mapped[str]
 
 
+class UserSite(Base):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("user.id")
+    )
+    site_code: Mapped[str] = mapped_column(ForeignKey("site.code"))
+
+
 class UserRole(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("user.id")
     )
     role_code: Mapped[str] = mapped_column(ForeignKey("role.code"))
-    site_code: Mapped[str] = mapped_column(ForeignKey("site.code"))
-
-
-class UserSite(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("user.id")
-    )
     site_code: Mapped[str] = mapped_column(ForeignKey("site.code"))

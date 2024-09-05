@@ -1,8 +1,12 @@
-from pydantic import BaseModel, ConfigDict
+from typing import Annotated
+
+from pydantic import BaseModel, ConfigDict, StringConstraints
+
+SiteCode = Annotated[str, StringConstraints(to_upper=True, max_length=4)]
 
 
 class SiteCreate(BaseModel):
-    code: str
+    code: SiteCode
     name: str
 
 
@@ -13,5 +17,5 @@ class SiteUpdate(BaseModel):
 class SiteDetail(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    code: str
+    code: SiteCode
     name: str

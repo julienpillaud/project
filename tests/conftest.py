@@ -49,8 +49,8 @@ def role_repository() -> InMemoryRoleRepository:
 @pytest.fixture
 def site_repository() -> InMemorySiteRepository:
     data = [
-        SiteDetail(code="SITE1", name="site 1"),
-        SiteDetail(code="SITE2", name="site2"),
+        SiteDetail(code="SIT1", name="site 1"),
+        SiteDetail(code="SIT2", name="site 2"),
     ]
     return InMemorySiteRepository(data=data)
 

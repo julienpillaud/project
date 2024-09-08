@@ -18,3 +18,4 @@ runs:
 
     - name: Install the project
       run: uv sync --all-extras --dev
+      shell: bash

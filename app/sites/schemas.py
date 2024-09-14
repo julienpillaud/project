@@ -1,3 +1,4 @@
+import uuid
 from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, StringConstraints
@@ -17,5 +18,6 @@ class SiteUpdate(BaseModel):
 class SiteDetail(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
+    id: uuid.UUID
     code: SiteCode
     name: str

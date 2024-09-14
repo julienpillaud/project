@@ -40,8 +40,8 @@ def client_fixture(session: Session) -> Iterator[TestClient]:
 @pytest.fixture
 def role_repository() -> InMemoryRoleRepository:
     data = [
-        RoleDetail(code="DEV", description="developer"),
-        RoleDetail(code="ADMIN", description="administrator"),
+        RoleDetail(id=uuid.uuid4(), code="DEV", description="developer"),
+        RoleDetail(id=uuid.uuid4(), code="ADMIN", description="administrator"),
     ]
     return InMemoryRoleRepository(data=data)
 
@@ -49,8 +49,8 @@ def role_repository() -> InMemoryRoleRepository:
 @pytest.fixture
 def site_repository() -> InMemorySiteRepository:
     data = [
-        SiteDetail(code="SIT1", name="site 1"),
-        SiteDetail(code="SIT2", name="site 2"),
+        SiteDetail(id=uuid.uuid4(), code="SIT1", name="site 1"),
+        SiteDetail(id=uuid.uuid4(), code="SIT2", name="site 2"),
     ]
     return InMemorySiteRepository(data=data)
 

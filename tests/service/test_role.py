@@ -35,21 +35,22 @@ def test_create_role(role_repository: InMemoryRoleRepository) -> None:
 
 def test_update_role(role_repository: InMemoryRoleRepository) -> None:
     service = RoleService(repository=role_repository)
-    role_code = role_repository.data[0].code
+    role_db = role_repository.data[0]
     role_update = RoleUpdate(description="role updated")
 
-    role = service.update_role(code=role_code, role_update=role_update)
+    role = service.update_role(role_id=role_db.id, role_update=role_update)
 
     assert isinstance(role, RoleDetail)
-    assert role.code == role_code
+    assert role.id == role_db.id
+    assert role.code == role_db.code
     assert role.description == role_update.description
 
 
 def test_delete_role(role_repository: InMemoryRoleRepository) -> None:
     service = RoleService(repository=role_repository)
     nb_roles = len(role_repository.data)
-    role_code = role_repository.data[0].code
+    role_db = role_repository.data[0]
 
-    service.delete_role(code=role_code)
+    service.delete_role(role_id=role_db.id)
 
     assert len(role_repository.data) == nb_roles - 1

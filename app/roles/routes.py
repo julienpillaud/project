@@ -1,3 +1,4 @@
+import uuid
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -17,9 +18,9 @@ def get_roles(role_service: RoleServiceDependency) -> Any:
     return role_service.get_roles()
 
 
-@router.get("/{code}", response_model=RoleDetail)
-def get_role(code: str, role_service: RoleServiceDependency) -> Any:
-    if role := role_service.get_role_by_code(code=code):
+@router.get("/{role_id}", response_model=RoleDetail)
+def get_role(role_id: uuid.UUID, role_service: RoleServiceDependency) -> Any:
+    if role := role_service.get_role(role_id=role_id):
         return role
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found")
 
@@ -33,21 +34,21 @@ def create_role(role_service: RoleServiceDependency, role_create: RoleCreate) ->
     return role_service.create_role(role_create=role_create)
 
 
-@router.patch("/{code}", response_model=RoleDetail)
+@router.patch("/{role_id}", response_model=RoleDetail)
 def update_role(
-    role_service: RoleServiceDependency, code: str, role_update: RoleUpdate
+    role_service: RoleServiceDependency, role_id: uuid.UUID, role_update: RoleUpdate
 ) -> Any:
-    if not role_service.get_role_by_code(code=code):
+    if not role_service.get_role(role_id=role_id):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Role not found"
         )
-    return role_service.update_role(code=code, role_update=role_update)
+    return role_service.update_role(role_id=role_id, role_update=role_update)
 
 
-@router.delete("/{code}")
-def delete_role(role_service: RoleServiceDependency, code: str) -> None:
-    if not role_service.get_role_by_code(code=code):
+@router.delete("/{role_id}")
+def delete_role(role_service: RoleServiceDependency, role_id: uuid.UUID) -> None:
+    if not role_service.get_role(role_id=role_id):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Role not found"
         )
-    role_service.delete_role(code=code)
+    role_service.delete_role(role_id=role_id)

@@ -1,7 +1,8 @@
 import uuid
 from typing import Any, Protocol, TypeVar
 
-from sqlalchemy.orm import DeclarativeBase, declared_attr
+from sqlalchemy import Uuid
+from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 from app.roles.schemas import RoleDetail
 from app.sites.schemas import SiteDetail
@@ -13,31 +14,25 @@ T = TypeVar("T")
 class AbstractRepository(Protocol[T]):
     def get_all(self) -> list[T]: ...
 
+    def get(self, entity_id: uuid.UUID) -> T | None: ...
+
     def create(self, entity_create: dict[str, Any]) -> T: ...
+
+    def update(self, entity_id: uuid.UUID, entity_update: dict[str, Any]) -> T: ...
+
+    def delete(self, entity_id: uuid.UUID) -> None: ...
 
 
 class AbstractUserRepository(AbstractRepository[UserDetail], Protocol):
-    def get(self, entity_id: uuid.UUID) -> UserDetail | None: ...
-
     def get_by_upn(self, upn: str) -> UserDetail | None: ...
-
-    def delete(self, entity_id: uuid.UUID) -> None: ...
 
 
 class AbstractRoleRepository(AbstractRepository[RoleDetail], Protocol):
     def get_by_code(self, code: str) -> RoleDetail | None: ...
 
-    def update(self, code: str, entity_update: dict[str, Any]) -> RoleDetail: ...
-
-    def delete(self, code: str) -> None: ...
-
 
 class AbstractSiteRepository(AbstractRepository[SiteDetail], Protocol):
     def get_by_code(self, code: str) -> SiteDetail | None: ...
-
-    def update(self, code: str, entity_update: dict[str, Any]) -> SiteDetail: ...
-
-    def delete(self, code: str) -> None: ...
 
 
 class Base(DeclarativeBase):
@@ -49,3 +44,7 @@ class Base(DeclarativeBase):
     @declared_attr.directive
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )

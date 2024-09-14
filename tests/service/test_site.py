@@ -13,17 +13,6 @@ def test_get_sites(site_repository: InMemorySiteRepository) -> None:
     assert len(sites) == len(site_repository.data)
 
 
-def test_get_site_by_code(site_repository: InMemorySiteRepository) -> None:
-    service = SiteService(repository=site_repository)
-    expected = site_repository.data[0]
-
-    site = service.get_site_by_code(code=expected.code)
-
-    assert isinstance(site, SiteDetail)
-    assert site.code == expected.code
-    assert site.name == expected.name
-
-
 def test_create_site(site_repository: InMemorySiteRepository) -> None:
     service = SiteService(repository=site_repository)
     site_create = SiteCreate(code="NEW", name="new site")
@@ -37,21 +26,22 @@ def test_create_site(site_repository: InMemorySiteRepository) -> None:
 
 def test_update_site(site_repository: InMemorySiteRepository) -> None:
     service = SiteService(repository=site_repository)
-    site_code = site_repository.data[0].code
+    site_db = site_repository.data[0]
     site_update = SiteUpdate(name="site updated")
 
-    site = service.update_site(code=site_code, site_update=site_update)
+    site = service.update_site(site_id=site_db.id, site_update=site_update)
 
     assert isinstance(site, SiteDetail)
-    assert site.code == site_code
+    assert site.id == site_db.id
+    assert site.code == site_db.code
     assert site.name == site_update.name
 
 
 def test_delete_site(site_repository: InMemorySiteRepository) -> None:
     service = SiteService(repository=site_repository)
     nb_sites = len(site_repository.data)
-    site_code = site_repository.data[0].code
+    site_db = site_repository.data[0]
 
-    service.delete_site(code=site_code)
+    service.delete_site(site_id=site_db.id)
 
     assert len(site_repository.data) == nb_sites - 1

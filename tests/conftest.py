@@ -63,12 +63,14 @@ def user_repository() -> InMemoryUserRepository:
             upn="user1@mail.com",
             first_name="user 1",
             last_name="",
+            sites=[],
         ),
         UserDetail(
             id=uuid.uuid4(),
             upn="user2@mail.com",
             first_name="user 2",
             last_name="",
+            sites=[],
         ),
     ]
     return InMemoryUserRepository(data=data)

@@ -4,6 +4,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
+from ..utils.site import create_site
 from ..utils.user import create_user
 
 
@@ -69,5 +70,33 @@ def test_delete_user(session: Session, client: TestClient) -> None:
 
 def test_delete_user_not_found(session: Session, client: TestClient) -> None:
     response = client.delete(f"/users/{uuid.uuid4()}")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_add_site_to_user(session: Session, client: TestClient) -> None:
+    user = create_user(session=session)
+    site = create_site(session=session)
+
+    response = client.post(f"/users/{user.id}/{site.id}")
+
+    assert response.status_code == status.HTTP_200_OK
+    content = response.json()
+    assert content["sites"]
+    assert content["sites"][0]["id"] == str(site.id)
+
+
+def test_add_site_to_user_user_not_found(session: Session, client: TestClient) -> None:
+    site = create_site(session=session)
+
+    response = client.post(f"/users/{uuid.uuid4()}/{site.id}")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_add_site_to_user_site_not_found(session: Session, client: TestClient) -> None:
+    user = create_user(session=session)
+
+    response = client.post(f"/users/{user.id}/{uuid.uuid4()}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND

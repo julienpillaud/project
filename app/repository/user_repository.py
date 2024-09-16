@@ -5,6 +5,7 @@ from sqlalchemy import select
 
 from app.repository.interface import AbstractUserRepository
 from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
+from app.sites.models import Site
 from app.users.models import User
 from app.users.schemas import UserDetail
 
@@ -19,6 +20,15 @@ class SQLAlchemyUserRepository(
         stmt = select(User).where(User.upn == upn)
         model_obj = self.session.scalars(stmt).first()
         return UserDetail.model_validate(model_obj) if model_obj else None
+
+    def add_site_to_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> UserDetail:
+        user = self.session.get(User, user_id)
+        site = self.session.get(Site, site_id)
+        if not user or not site:
+            raise ValueError
+        user.sites.append(site)
+        self.session.commit()
+        return UserDetail.model_validate(user)
 
 
 class InMemoryUserRepository(AbstractUserRepository):
@@ -36,6 +46,7 @@ class InMemoryUserRepository(AbstractUserRepository):
 
     def create(self, entity_create: dict[str, Any]) -> UserDetail:
         entity_create["id"] = uuid.uuid4()
+        entity_create["sites"] = []
         data = UserDetail.model_validate(entity_create)
         self.data.append(data)
         return data
@@ -45,3 +56,6 @@ class InMemoryUserRepository(AbstractUserRepository):
 
     def delete(self, entity_id: uuid.UUID) -> None:
         self.data = [item for item in self.data if item.id != entity_id]
+
+    def add_site_to_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> UserDetail:
+        return NotImplemented

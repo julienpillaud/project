@@ -2,6 +2,8 @@ import uuid
 
 from pydantic import BaseModel, ConfigDict
 
+from app.sites.schemas import SiteDetail
+
 
 class UserCreate(BaseModel):
     upn: str
@@ -16,3 +18,5 @@ class UserDetail(BaseModel):
     upn: str
     first_name: str
     last_name: str
+
+    sites: list[SiteDetail]

@@ -1,6 +1,8 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.associations import user_site_table
 from app.repository.interface import Base
+from app.sites.models import Site
 
 
 class User(Base):
@@ -8,19 +10,4 @@ class User(Base):
     first_name: Mapped[str]
     last_name: Mapped[str]
 
-
-# class UserSite(Base):
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     user_id: Mapped[uuid.UUID] = mapped_column(
-#         UUID(as_uuid=True), ForeignKey("user.id")
-#     )
-#     site_code: Mapped[str] = mapped_column(ForeignKey("site.code"))
-#
-#
-# class UserRole(Base):
-#     id: Mapped[int] = mapped_column(primary_key=True)
-#     user_id: Mapped[uuid.UUID] = mapped_column(
-#         UUID(as_uuid=True), ForeignKey("user.id")
-#     )
-#     role_code: Mapped[str] = mapped_column(ForeignKey("role.code"))
-#     site_code: Mapped[str] = mapped_column(ForeignKey("site.code"))
+    sites: Mapped[list[Site]] = relationship(secondary=user_site_table)

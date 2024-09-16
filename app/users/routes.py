@@ -3,7 +3,8 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.dependencies import get_user_service
+from app.dependencies import get_site_service, get_user_service
+from app.sites.service import SiteService
 from app.users.schemas import UserCreate, UserDetail
 from app.users.service import UserService
 
@@ -11,6 +12,7 @@ router = APIRouter(tags=["users"], prefix="/users")
 
 
 UserServiceDependency = Annotated[UserService, Depends(get_user_service)]
+SiteServiceDependency = Annotated[SiteService, Depends(get_site_service)]
 
 
 @router.get("/", response_model=list[UserDetail])
@@ -41,3 +43,23 @@ def delete_user(user_service: UserServiceDependency, user_id: uuid.UUID) -> None
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
     user_service.delete_user(user_id=user_id)
+
+
+@router.post("/{user_id}/{site_id}", response_model=UserDetail)
+def add_site_to_user(
+    user_service: UserServiceDependency,
+    site_service: SiteServiceDependency,
+    user_id: uuid.UUID,
+    site_id: uuid.UUID,
+) -> Any:
+    if not user_service.get_user(user_id=user_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+
+    if not site_service.get_site(site_id=site_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Site not found"
+        )
+
+    return user_service.add_site_to_user(user_id=user_id, site_id=site_id)

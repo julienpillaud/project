@@ -26,6 +26,10 @@ class AbstractRepository(Protocol[T]):
 class AbstractUserRepository(AbstractRepository[UserDetail], Protocol):
     def get_by_upn(self, upn: str) -> UserDetail | None: ...
 
+    def add_site_to_user(
+        self, user_id: uuid.UUID, site_id: uuid.UUID
+    ) -> UserDetail: ...
+
 
 class AbstractRoleRepository(AbstractRepository[RoleDetail], Protocol):
     def get_by_code(self, code: str) -> RoleDetail | None: ...

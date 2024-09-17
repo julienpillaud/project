@@ -6,8 +6,8 @@ dependencies = [
     "fastapi==0.114.2",
     "uvicorn==0.30.6",
     "pydantic-settings==2.5.2",
-    "sqlalchemy==2.0.34",
-    "psycopg[binary]==3.2.1",
+    "sqlalchemy==2.0.35",
+    "psycopg[binary]==3.2.2",
     "alembic==1.13.2",
 ]
 

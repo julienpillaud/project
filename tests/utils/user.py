@@ -1,5 +1,8 @@
+import uuid
+
 from sqlalchemy.orm import Session
 
+from app.sites.models import Site
 from app.users.models import User
 
 from .utils import random_email, random_string
@@ -14,3 +17,13 @@ def create_user(session: Session) -> User:
     session.add(entity)
     session.commit()
     return entity
+
+
+def add_site_to_user(session: Session, user: User, site: Site) -> User:
+    user.sites.append(site)
+    session.commit()
+    return user
+
+
+def get_user(session: Session, user_id: uuid.UUID) -> User | None:
+    return session.get(User, user_id)

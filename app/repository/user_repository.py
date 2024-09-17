@@ -30,6 +30,14 @@ class SQLAlchemyUserRepository(
         self.session.commit()
         return UserDetail.model_validate(user)
 
+    def delete_site_from_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> None:
+        user = self.session.get(User, user_id)
+        site = self.session.get(Site, site_id)
+        if not user or not site:
+            raise ValueError
+        user.sites.remove(site)
+        self.session.commit()
+
 
 class InMemoryUserRepository(AbstractUserRepository):
     def __init__(self, data: list[UserDetail]) -> None:
@@ -59,3 +67,6 @@ class InMemoryUserRepository(AbstractUserRepository):
 
     def add_site_to_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> UserDetail:
         return NotImplemented
+
+    def delete_site_from_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> None:
+        return None

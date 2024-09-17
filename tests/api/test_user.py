@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from ..utils.site import create_site
-from ..utils.user import create_user
+from ..utils.user import add_site_to_user, create_user, get_user
 
 
 def test_get_users(session: Session, client: TestClient) -> None:
@@ -98,5 +98,38 @@ def test_add_site_to_user_site_not_found(session: Session, client: TestClient) -
     user = create_user(session=session)
 
     response = client.post(f"/users/{user.id}/{uuid.uuid4()}")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_delete_site_from_user(session: Session, client: TestClient) -> None:
+    user = create_user(session=session)
+    site = create_site(session=session)
+    add_site_to_user(session=session, user=user, site=site)
+
+    response = client.delete(f"/users/{user.id}/{site.id}")
+
+    assert response.status_code == status.HTTP_200_OK
+    updated_user = get_user(session=session, user_id=user.id)
+    assert updated_user
+    assert not updated_user.sites
+
+
+def test_delete_site_from_user_user_not_found(
+    session: Session, client: TestClient
+) -> None:
+    site = create_site(session=session)
+
+    response = client.delete(f"/users/{uuid.uuid4()}/{site.id}")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+def test_delete_site_from_user_site_not_found(
+    session: Session, client: TestClient
+) -> None:
+    user = create_user(session=session)
+
+    response = client.delete(f"/users/{user.id}/{uuid.uuid4()}")
 
     assert response.status_code == status.HTTP_404_NOT_FOUND

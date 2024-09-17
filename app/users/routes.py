@@ -63,3 +63,23 @@ def add_site_to_user(
         )
 
     return user_service.add_site_to_user(user_id=user_id, site_id=site_id)
+
+
+@router.delete("/{user_id}/{site_id}")
+def delete_site_from_user(
+    user_service: UserServiceDependency,
+    site_service: SiteServiceDependency,
+    user_id: uuid.UUID,
+    site_id: uuid.UUID,
+) -> Any:
+    if not user_service.get_user(user_id=user_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+
+    if not site_service.get_site(site_id=site_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Site not found"
+        )
+
+    user_service.delete_site_from_user(user_id=user_id, site_id=site_id)

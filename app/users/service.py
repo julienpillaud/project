@@ -25,3 +25,6 @@ class UserService:
 
     def add_site_to_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> UserDetail:
         return self.repository.add_site_to_user(user_id=user_id, site_id=site_id)
+
+    def delete_site_from_user(self, user_id: uuid.UUID, site_id: uuid.UUID) -> None:
+        return self.repository.delete_site_from_user(user_id=user_id, site_id=site_id)

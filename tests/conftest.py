@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 from app.dependencies import get_session
 from app.main import app
 from app.repository.interface import Base
-from app.repository.role_repositpry import InMemoryRoleRepository
-from app.repository.site_repositpry import InMemorySiteRepository
+from app.repository.role_repository import InMemoryRoleRepository
+from app.repository.site_repository import InMemorySiteRepository
 from app.repository.user_repository import InMemoryUserRepository
 from app.roles.schemas import RoleDetail
 from app.sites.schemas import SiteDetail

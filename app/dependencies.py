@@ -7,8 +7,8 @@ from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session
 
 from app.config import Settings
-from app.repository.role_repositpry import SQLAlchemyRoleRepository
-from app.repository.site_repositpry import SQLAlchemySiteRepository
+from app.repository.role_repository import SQLAlchemyRoleRepository
+from app.repository.site_repository import SQLAlchemySiteRepository
 from app.repository.user_repository import SQLAlchemyUserRepository
 from app.roles.service import RoleService
 from app.sites.service import SiteService

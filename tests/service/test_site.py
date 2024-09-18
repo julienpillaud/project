@@ -1,6 +1,4 @@
-from app.repository.site_repositpry import (
-    InMemorySiteRepository,
-)
+from app.repository.site_repository import InMemorySiteRepository
 from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 from app.sites.service import SiteService
 

@@ -1,4 +1,4 @@
-from app.repository.role_repositpry import InMemoryRoleRepository
+from app.repository.role_repository import InMemoryRoleRepository
 from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 from app.roles.service import RoleService
 

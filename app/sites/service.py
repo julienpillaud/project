@@ -18,12 +18,10 @@ class SiteService:
         return self.repository.get_by_code(code)
 
     def create_site(self, site_create: SiteCreate) -> SiteDetail:
-        return self.repository.create(entity_create=site_create.model_dump())
+        return self.repository.create(entity_create=site_create)
 
     def update_site(self, site_id: uuid.UUID, site_update: SiteUpdate) -> SiteDetail:
-        return self.repository.update(
-            entity_id=site_id, entity_update=site_update.model_dump(exclude_unset=True)
-        )
+        return self.repository.update(entity_id=site_id, entity_update=site_update)
 
     def delete_site(self, site_id: uuid.UUID) -> None:
         self.repository.delete(entity_id=site_id)

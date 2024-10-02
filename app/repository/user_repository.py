@@ -1,5 +1,4 @@
 import uuid
-from typing import Any
 
 from sqlalchemy import select
 
@@ -7,7 +6,7 @@ from app.repository.interface import AbstractUserRepository
 from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
 from app.sites.models import Site
 from app.users.models import User
-from app.users.schemas import UserDetail
+from app.users.schemas import UserCreate, UserDetail, UserUpdate
 
 
 class SQLAlchemyUserRepository(
@@ -52,14 +51,14 @@ class InMemoryUserRepository(AbstractUserRepository):
     def get_by_upn(self, upn: str) -> UserDetail | None:
         return next((item for item in self.data if item.upn == upn), None)
 
-    def create(self, entity_create: dict[str, Any]) -> UserDetail:
-        entity_create["id"] = uuid.uuid4()
-        entity_create["sites"] = []
-        data = UserDetail.model_validate(entity_create)
+    def create(self, entity_create: UserCreate) -> UserDetail:
+        # entity_create["id"] = uuid.uuid4()
+        # entity_create.sites = []
+        data = UserDetail(id=uuid.uuid4(), sites=[], **entity_create.model_dump())
         self.data.append(data)
         return data
 
-    def update(self, entity_id: uuid.UUID, entity_update: dict[str, Any]) -> UserDetail:
+    def update(self, entity_id: uuid.UUID, entity_update: UserUpdate) -> UserDetail:
         return NotImplemented
 
     def delete(self, entity_id: uuid.UUID) -> None:

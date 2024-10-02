@@ -1,12 +1,11 @@
 import uuid
-from typing import Any
 
 from sqlalchemy import select
 
 from app.repository.interface import AbstractRoleRepository
 from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
 from app.roles.models import Role
-from app.roles.schemas import RoleDetail
+from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 
 
 class SQLAlchemyRoleRepository(
@@ -34,18 +33,17 @@ class InMemoryRoleRepository(AbstractRoleRepository):
     def get_by_code(self, code: str) -> RoleDetail | None:
         return next((entity for entity in self.data if entity.code == code), None)
 
-    def create(self, entity_create: dict[str, Any]) -> RoleDetail:
-        entity_create["id"] = uuid.uuid4()
-        data = RoleDetail.model_validate(entity_create)
+    def create(self, entity_create: RoleCreate) -> RoleDetail:
+        data = RoleDetail(id=uuid.uuid4(), **entity_create.model_dump())
         self.data.append(data)
         return data
 
-    def update(self, entity_id: uuid.UUID, entity_update: dict[str, Any]) -> RoleDetail:
+    def update(self, entity_id: uuid.UUID, entity_update: RoleUpdate) -> RoleDetail:
         entity = self.get(entity_id=entity_id)
         if not entity:
             raise ValueError
 
-        for key, value in entity_update.items():
+        for key, value in entity_update.model_dump(exclude_unset=True).items():
             setattr(entity, key, value)
 
         return entity

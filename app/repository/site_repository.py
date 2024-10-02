@@ -1,12 +1,11 @@
 import uuid
-from typing import Any
 
 from sqlalchemy import select
 
 from app.repository.interface import AbstractSiteRepository
 from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
 from app.sites.models import Site
-from app.sites.schemas import SiteDetail
+from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 
 
 class SQLAlchemySiteRepository(
@@ -34,18 +33,17 @@ class InMemorySiteRepository(AbstractSiteRepository):
     def get_by_code(self, code: str) -> SiteDetail | None:
         return next((entity for entity in self.data if entity.code == code), None)
 
-    def create(self, entity_create: dict[str, Any]) -> SiteDetail:
-        entity_create["id"] = uuid.uuid4()
-        data = SiteDetail.model_validate(entity_create)
+    def create(self, entity_create: SiteCreate) -> SiteDetail:
+        data = SiteDetail(id=uuid.uuid4(), **entity_create.model_dump())
         self.data.append(data)
         return data
 
-    def update(self, entity_id: uuid.UUID, entity_update: dict[str, Any]) -> SiteDetail:
+    def update(self, entity_id: uuid.UUID, entity_update: SiteUpdate) -> SiteDetail:
         entity = self.get(entity_id=entity_id)
         if not entity:
             raise ValueError
 
-        for key, value in entity_update.items():
+        for key, value in entity_update.model_dump(exclude_unset=True).items():
             setattr(entity, key, value)
 
         return entity

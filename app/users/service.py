@@ -18,7 +18,7 @@ class UserService:
         return self.repository.get_by_upn(upn=upn)
 
     def create_user(self, user_create: UserCreate) -> UserDetail:
-        return self.repository.create(entity_create=user_create.model_dump())
+        return self.repository.create(entity_create=user_create)
 
     def delete_user(self, user_id: uuid.UUID) -> None:
         self.repository.delete(entity_id=user_id)

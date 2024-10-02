@@ -18,12 +18,10 @@ class RoleService:
         return self.repository.get_by_code(code=code)
 
     def create_role(self, role_create: RoleCreate) -> RoleDetail:
-        return self.repository.create(entity_create=role_create.model_dump())
+        return self.repository.create(entity_create=role_create)
 
     def update_role(self, role_id: uuid.UUID, role_update: RoleUpdate) -> RoleDetail:
-        return self.repository.update(
-            entity_id=role_id, entity_update=role_update.model_dump(exclude_unset=True)
-        )
+        return self.repository.update(entity_id=role_id, entity_update=role_update)
 
     def delete_role(self, role_id: uuid.UUID) -> None:
         self.repository.delete(entity_id=role_id)

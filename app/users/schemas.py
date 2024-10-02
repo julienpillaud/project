@@ -11,6 +11,10 @@ class UserCreate(BaseModel):
     last_name: str
 
 
+class UserUpdate(BaseModel):
+    pass
+
+
 class UserDetail(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

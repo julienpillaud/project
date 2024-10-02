@@ -52,8 +52,6 @@ class InMemoryUserRepository(AbstractUserRepository):
         return next((item for item in self.data if item.upn == upn), None)
 
     def create(self, entity_create: UserCreate) -> UserDetail:
-        # entity_create["id"] = uuid.uuid4()
-        # entity_create.sites = []
         data = UserDetail(id=uuid.uuid4(), sites=[], **entity_create.model_dump())
         self.data.append(data)
         return data

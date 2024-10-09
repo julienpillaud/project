@@ -10,7 +10,8 @@ from app.users.schemas import UserCreate, UserDetail, UserUpdate
 
 
 class SQLAlchemyUserRepository(
-    SQLAlchemyRepositoryBase[User, UserDetail], AbstractUserRepository
+    AbstractUserRepository,
+    SQLAlchemyRepositoryBase[User, UserDetail, UserUpdate, UserCreate],
 ):
     model = User
     schema = UserDetail

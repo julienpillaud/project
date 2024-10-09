@@ -9,7 +9,8 @@ from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 
 
 class SQLAlchemyRoleRepository(
-    SQLAlchemyRepositoryBase[Role, RoleDetail], AbstractRoleRepository
+    AbstractRoleRepository,
+    SQLAlchemyRepositoryBase[Role, RoleDetail, RoleCreate, RoleUpdate],
 ):
     model = Role
     schema = RoleDetail

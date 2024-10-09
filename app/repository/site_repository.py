@@ -9,7 +9,8 @@ from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 
 
 class SQLAlchemySiteRepository(
-    SQLAlchemyRepositoryBase[Site, SiteDetail], AbstractSiteRepository
+    AbstractSiteRepository,
+    SQLAlchemyRepositoryBase[Site, SiteDetail, SiteCreate, SiteUpdate],
 ):
     model = Site
     schema = SiteDetail

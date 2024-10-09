@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.repository.interface import Base
+from app.repository.interface import AbstractRepository, Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 SchemaType = TypeVar("SchemaType", bound=BaseModel)
@@ -13,7 +13,10 @@ CreateType = TypeVar("CreateType", bound=BaseModel)
 UpdateType = TypeVar("UpdateType", bound=BaseModel)
 
 
-class SQLAlchemyRepositoryBase(Generic[ModelType, SchemaType]):
+class SQLAlchemyRepositoryBase(
+    AbstractRepository[SchemaType, CreateType, UpdateType],
+    Generic[ModelType, SchemaType, CreateType, UpdateType],
+):
     model: type[ModelType]
     schema: type[SchemaType]
 

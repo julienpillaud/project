@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
 from app.repository.interface import AbstractRoleRepository
-from app.repository.sql.models import Role
-from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
+from app.repository.sqlalchemy.base import SQLAlchemyRepositoryBase
+from app.repository.sqlalchemy.models import Role
 from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 
 

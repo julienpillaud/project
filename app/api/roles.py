@@ -3,7 +3,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.dependencies import get_role_service
+from app.api.dependencies import get_role_service
 from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 from app.roles.service import RoleService
 

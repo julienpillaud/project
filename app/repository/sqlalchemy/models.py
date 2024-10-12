@@ -1,7 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.repository.sql.base import Base
+from app.repository.sqlalchemy.base import Base
 
 user_site_table = Table(
     "user_site",

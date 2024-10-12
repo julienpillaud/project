@@ -3,7 +3,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.dependencies import get_site_service, get_user_service
+from app.api.dependencies import get_site_service, get_user_service
 from app.sites.service import SiteService
 from app.users.schemas import UserCreate, UserDetail
 from app.users.service import UserService

@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
 from app.repository.interface import AbstractSiteRepository
-from app.repository.sql.models import Site
-from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
+from app.repository.sqlalchemy.base import SQLAlchemyRepositoryBase
+from app.repository.sqlalchemy.models import Site
 from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 
 

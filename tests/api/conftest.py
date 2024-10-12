@@ -5,9 +5,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import StaticPool, create_engine
 from sqlalchemy.orm import Session
 
-from app.dependencies import get_session
+from app.api.dependencies import get_session
 from app.main import app
-from app.repository.sql.base import Base
+from app.repository.sqlalchemy.base import Base
 
 
 @pytest.fixture

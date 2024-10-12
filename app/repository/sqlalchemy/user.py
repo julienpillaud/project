@@ -3,8 +3,8 @@ import uuid
 from sqlalchemy import select
 
 from app.repository.interface import AbstractUserRepository
-from app.repository.sql.models import Site, User
-from app.repository.sqlalchemy_repository import SQLAlchemyRepositoryBase
+from app.repository.sqlalchemy.base import SQLAlchemyRepositoryBase
+from app.repository.sqlalchemy.models import Site, User
 from app.users.schemas import UserCreate, UserDetail, UserUpdate
 
 

@@ -2,11 +2,32 @@ import uuid
 from typing import Generic, TypeVar
 
 from pydantic import BaseModel
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy import Uuid, select
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    Session,
+    declared_attr,
+    mapped_column,
+)
 
 from app.repository.interface import AbstractRepository
-from app.repository.sql.base import Base
+
+
+class Base(DeclarativeBase):
+    """Custom declarative base for SQLAlchemy
+
+    # https://docs.sqlalchemy.org/en/20/orm/declarative_mixins.html#augmenting-the-base
+    """
+
+    @declared_attr.directive
+    def __tablename__(cls) -> str:
+        return cls.__name__.lower()
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+
 
 ModelType = TypeVar("ModelType", bound=Base)
 SchemaType = TypeVar("SchemaType", bound=BaseModel)

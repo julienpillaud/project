@@ -1,7 +1,6 @@
-import uuid
-
 from pydantic import BaseModel, ConfigDict
 
+from app.entities import BaseEntity
 from app.sites.schemas import SiteDetail
 
 
@@ -15,12 +14,11 @@ class UserUpdate(BaseModel):
     pass
 
 
-class UserDetail(BaseModel):
+class UserDetail(BaseEntity):
     model_config = ConfigDict(from_attributes=True)
 
-    id: uuid.UUID
     upn: str
     first_name: str
     last_name: str
 
-    sites: list[SiteDetail]
+    sites: list[SiteDetail] = []

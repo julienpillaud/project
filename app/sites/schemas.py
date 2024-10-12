@@ -1,7 +1,8 @@
-import uuid
 from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, StringConstraints
+
+from app.entities import BaseEntity
 
 SiteCode = Annotated[str, StringConstraints(to_upper=True, max_length=4)]
 
@@ -15,9 +16,8 @@ class SiteUpdate(BaseModel):
     name: str
 
 
-class SiteDetail(BaseModel):
+class SiteDetail(BaseEntity):
     model_config = ConfigDict(from_attributes=True)
 
-    id: uuid.UUID
     code: SiteCode
     name: str

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.sites.models import Site
+from app.repository.sql.models import Site
 
 from .utils import random_string
 

@@ -1,4 +1,4 @@
-from app.repository.user_repository import InMemoryUserRepository
+from app.repository.inmemory.user import InMemoryUserRepository
 from app.users.schemas import UserCreate, UserDetail
 from app.users.service import UserService
 

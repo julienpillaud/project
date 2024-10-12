@@ -2,8 +2,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from app.sites.models import Site
-from app.users.models import User
+from app.repository.sql.models import Site, User
 
 from .utils import random_email, random_string
 

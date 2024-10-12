@@ -1,6 +1,6 @@
-import uuid
-
 from pydantic import BaseModel, ConfigDict
+
+from app.entities import BaseEntity
 
 
 class RoleCreate(BaseModel):
@@ -12,9 +12,8 @@ class RoleUpdate(BaseModel):
     description: str
 
 
-class RoleDetail(BaseModel):
+class RoleDetail(BaseEntity):
     model_config = ConfigDict(from_attributes=True)
 
-    id: uuid.UUID
     code: str
     description: str

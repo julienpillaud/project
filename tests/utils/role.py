@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.roles.models import Role
+from app.repository.sql.models import Role
 
 from .utils import random_string
 

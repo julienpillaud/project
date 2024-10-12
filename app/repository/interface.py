@@ -1,9 +1,6 @@
 import uuid
 from typing import Protocol, TypeVar
 
-from sqlalchemy import Uuid
-from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
-
 from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 from app.users.schemas import UserCreate, UserDetail, UserUpdate
@@ -49,18 +46,3 @@ class AbstractSiteRepository(
     AbstractRepository[SiteDetail, SiteCreate, SiteUpdate], Protocol
 ):
     def get_by_code(self, code: str) -> SiteDetail | None: ...
-
-
-class Base(DeclarativeBase):
-    """Custom declarative base for SQLAlchemy
-
-    # https://docs.sqlalchemy.org/en/20/orm/declarative_mixins.html#augmenting-the-base
-    """
-
-    @declared_attr.directive
-    def __tablename__(cls) -> str:
-        return cls.__name__.lower()
-
-    id: Mapped[uuid.UUID] = mapped_column(
-        Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )

@@ -5,7 +5,8 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.repository.interface import AbstractRepository, Base
+from app.repository.interface import AbstractRepository
+from app.repository.sql.base import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 SchemaType = TypeVar("SchemaType", bound=BaseModel)

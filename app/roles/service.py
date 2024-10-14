@@ -2,12 +2,10 @@ import uuid
 
 from app.repository.interface import AbstractRoleRepository
 from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
+from app.services import BaseService
 
 
-class RoleService:
-    def __init__(self, repository: AbstractRoleRepository):
-        self.repository = repository
-
+class RoleService(BaseService[AbstractRoleRepository]):
     def get_roles(self) -> list[RoleDetail]:
         return self.repository.get_all()
 

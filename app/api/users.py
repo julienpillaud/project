@@ -3,7 +3,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_site_service, get_user_service
+from app.api.dependencies.services import ServiceDependencyFactory
 from app.sites.service import SiteService
 from app.users.schemas import UserCreate, UserDetail
 from app.users.service import UserService
@@ -11,8 +11,15 @@ from app.users.service import UserService
 router = APIRouter(tags=["users"], prefix="/users")
 
 
-UserServiceDependency = Annotated[UserService, Depends(get_user_service)]
-SiteServiceDependency = Annotated[SiteService, Depends(get_site_service)]
+user_service_dependency_factory = ServiceDependencyFactory(service_name="user")
+UserServiceDependency = Annotated[
+    UserService, Depends(user_service_dependency_factory.dependency())
+]
+
+site_service_dependency_factory = ServiceDependencyFactory(service_name="site")
+SiteServiceDependency = Annotated[
+    SiteService, Depends(site_service_dependency_factory.dependency())
+]
 
 
 @router.get("/", response_model=list[UserDetail])

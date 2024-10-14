@@ -3,14 +3,16 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_role_service
+from app.api.dependencies.services import ServiceDependencyFactory
 from app.roles.schemas import RoleCreate, RoleDetail, RoleUpdate
 from app.roles.service import RoleService
 
 router = APIRouter(tags=["roles"], prefix="/roles")
 
-
-RoleServiceDependency = Annotated[RoleService, Depends(get_role_service)]
+role_service_dependency_factory = ServiceDependencyFactory(service_name="role")
+RoleServiceDependency = Annotated[
+    RoleService, Depends(role_service_dependency_factory.dependency())
+]
 
 
 @router.get("/", response_model=list[RoleDetail])

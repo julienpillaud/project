@@ -1,13 +1,11 @@
 import uuid
 
 from app.repository.interface import AbstractSiteRepository
+from app.services import BaseService
 from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 
 
-class SiteService:
-    def __init__(self, repository: AbstractSiteRepository):
-        self.repository = repository
-
+class SiteService(BaseService[AbstractSiteRepository]):
     def get_sites(self) -> list[SiteDetail]:
         return self.repository.get_all()
 

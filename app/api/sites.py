@@ -3,14 +3,17 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from app.api.dependencies import get_site_service
+from app.api.dependencies.services import ServiceDependencyFactory
 from app.sites.schemas import SiteCreate, SiteDetail, SiteUpdate
 from app.sites.service import SiteService
 
 router = APIRouter(tags=["sites"], prefix="/sites")
 
 
-SiteServiceDependency = Annotated[SiteService, Depends(get_site_service)]
+site_service_dependency_factory = ServiceDependencyFactory(service_name="site")
+SiteServiceDependency = Annotated[
+    SiteService, Depends(site_service_dependency_factory.dependency())
+]
 
 
 @router.get("/", response_model=list[SiteDetail])

@@ -1,13 +1,11 @@
 import uuid
 
 from app.repository.interface import AbstractUserRepository
+from app.services import BaseService
 from app.users.schemas import UserCreate, UserDetail
 
 
-class UserService:
-    def __init__(self, repository: AbstractUserRepository):
-        self.repository = repository
-
+class UserService(BaseService[AbstractUserRepository]):
     def get_users(self) -> list[UserDetail]:
         return self.repository.get_all()
 
